@@ -8,13 +8,21 @@
   body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f4f4f4;
-    margin: 10px;
-    padding: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     min-height: 100vh;
   }
+  #topArea {
+      width: 100%;
+      background-color: #3498db;
+      color: #fff;
+      text-align: center;
+      padding: 16px;
+    }
+
   h4{
     text-align: center;
   }
@@ -47,6 +55,13 @@
     overflow: hidden;
   }
 
+  #separatorLine {
+      width: 100%;
+      height: 1px;
+      background-color: #ddd;
+      margin: 16px 0;
+    }
+  
   .image-container img {
     width: 100%;
     height: 100%;
@@ -81,10 +96,70 @@
     color: #444444;
     font-size: 0.9em; /* Decreased font size */
   }
+
+  .filter-button {
+      padding: 10px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .filter-button:hover {
+      background-color: #45a049;
+    }
+
 </style>
 
 </head>
 <body>
+<div id="topArea">
+  <h1>Welcome to Dynamic Organization Cards</h1>
+</div>
+
+<div id="filterSection">
+  <label class="filter-label" for="categoryFilter">Category:</label>
+  <select id="categoryFilter" class="filter-select">
+    <option value="">All Categories</option>
+    <option value="Science and Medicine">Science and Medicine</option>
+    <option value="Technology">Technology</option>
+  </select>
+
+  <label class="filter-label" for="yearFilter">Year:</label>
+  <select id="yearFilter" class="filter-select">
+    <option value="">All Years</option>
+    <option value="2018">2018</option>
+    <option value="2019">2019</option>
+    <option value="2020">2020</option>
+  </select>
+
+  <label class="filter-label" for="technologyFilter">Technology:</label>
+  <select id="technologyFilter" class="filter-select">
+    <option value="">All Technologies</option>
+    <option value="C">C</option>
+    <option value="C++">C++</option>
+    <option value="Python">Python</option>
+  </select>
+
+  <label class="filter-label" for="otherFilter">Other:</label>
+  <select id="otherFilter" class="filter-select">
+    <option value="">All Options</option>
+    <option value="Option1">Option1</option>
+    <option value="Option2">Option2</option>
+  </select>
+
+  <label class="filter-label" for="extraFilter">Extra:</label>
+  <select id="extraFilter" class="filter-select">
+    <option value="">All Extras</option>
+    <option value="Extra1">Extra1</option>
+    <option value="Extra2">Extra2</option>
+  </select>
+
+  <button class="filter-button" onclick="applyFilters()">Filter</button>
+</div>
+
+<div id="separatorLine"></div>
 
 <div id="cardsContainer"></div>
 
@@ -97,6 +172,30 @@
     } catch (error) {
       console.error('Error fetching data:', error);
     }
+  }
+
+  async function applyFilters() {
+    var organizationsData;
+    try {
+      const response = await fetch('/organizations'); // Assuming you have a route for organizations
+      organizationsData = await response.json();
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+    const category = document.getElementById("categoryFilter").value;
+    const year = document.getElementById("yearFilter").value;
+    const technology = document.getElementById("technologyFilter").value;
+    const other = document.getElementById("otherFilter").value;
+    const extra = document.getElementById("extraFilter").value;
+
+
+    const filteredData = organizationsData.filter(); //filter algo issues
+    console.log(category);
+    console.log(year);
+    generateCards(filteredData);
+    console.log(organizationsData);
+    console.log("sent data");
+    console.log(filteredData);
   }
 
   function generateCards(organizationsData) {
@@ -144,9 +243,17 @@
     });
   }
 
-  // Initial load with fetching organizations data
-  fetchData();
+  let flag = false;
 
+  async function startupFunction() {
+    applyFilters();
+    flag = true;
+  }
+
+  // Run startup function only if it hasn't been executed before
+  if (!flag) {
+    startupFunction();
+  }
 </script>
 
 </body>
