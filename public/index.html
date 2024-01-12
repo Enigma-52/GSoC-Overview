@@ -189,7 +189,11 @@
     const extra = document.getElementById("extraFilter").value;
 
 
-    const filteredData = organizationsData.filter(); //filter algo issues
+    const filteredData = organizationsData.filter(org => {
+      return (
+        (!category || org.category === category)
+      );
+    });
     console.log(category);
     console.log(year);
     generateCards(filteredData);
