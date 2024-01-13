@@ -3,6 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
   <title>GSoC Overview</title>
   <style>
   body {
@@ -11,13 +15,14 @@
     margin: 0;
       padding: 0;
       display: flex;
+      
       flex-direction: column;
       align-items: center;
     min-height: 100vh;
   }
   #topArea {
       width: 100%;
-      background-color: #3498db;
+      background-color: #3956e7;
       color: #fff;
       text-align: center;
       padding: 16px;
@@ -97,19 +102,53 @@
     font-size: 0.9em; /* Decreased font size */
   }
 
-  .filter-button {
-      padding: 10px;
-      background-color: #4caf50;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
+  #filterSection {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #f2f2f2;
+}
+
+.filter-label {
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.filter-select {
+  width: 150px;
+  padding: 5px 5px 5px 5px;
+  margin-bottom: 10px;
+  margin-top: 0; /* Set top margin to zero */
+}
+
+.filter-button {
+  padding: 8px 15px;
+  margin-left: 10px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.filter-button:hover {
+  background-color: #45a049;
+}
+
+.toastify-overlays {
+      top: 0;
+      right: 0;
+      width: 100%;
+      padding: 20px;
+      box-sizing: border-box;
+      pointer-events: none;
     }
 
-    .filter-button:hover {
-      background-color: #45a049;
+    .toastify-overlay {
+      margin-top: 10px;
     }
-
 </style>
 
 </head>
@@ -120,41 +159,32 @@
 
 <div id="filterSection">
   <label class="filter-label" for="categoryFilter">Category:</label>
-  <select id="categoryFilter" class="filter-select">
+  <select id="categoryFilter" class="filter-select js-states form-control">
     <option value="">All Categories</option>
-    <option value="Science and medicine">Science and Medicine</option>
-    <option value="Security">Security</option>
-  </select>
-
-  <label class="filter-label" for="yearFilter">Year:</label>
-  <select id="yearFilter" class="filter-select">
-    <option value="">All Years</option>
-    <option value="2018">2018</option>
-    <option value="2019">2019</option>
-    <option value="2020">2020</option>
   </select>
 
   <label class="filter-label" for="technologyFilter">Technology:</label>
-  <select id="technologyFilter" class="filter-select">
+  <select id="technologyFilter" class="filter-select js-states form-control">
     <option value="">All Technologies</option>
-    <option value="c">C</option>
-    <option value="c++">C++</option>
-    <option value="python">Python</option>
   </select>
 
-  <label class="filter-label" for="otherFilter">Other:</label>
-  <select id="otherFilter" class="filter-select">
-    <option value="">All Options</option>
-    <option value="Option1">Option1</option>
-    <option value="Option2">Option2</option>
+  <label class="filter-label" for="topicFilter">Topic:</label>
+  <select id="topicFilter" class="filter-select js-states form-control">
+    <option value="">All Topics</option>
   </select>
 
-  <label class="filter-label" for="extraFilter">Extra:</label>
-  <select id="extraFilter" class="filter-select">
-    <option value="">All Extras</option>
-    <option value="Extra1">Extra1</option>
-    <option value="Extra2">Extra2</option>
+  <label class="filter-label" for="yearFilter">Year:</label>
+  <select id="yearFilter" class="filter-select" class="js-states form-control" multiple>
+    <option value="2016">2016</option>
+    <option value="2017">2017</option>
+    <option value="2018">2018</option>
+    <option value="2019">2019</option>
+    <option value="2020">2020</option>
+    <option value="2021">2021</option>
+    <option value="2022">2022</option>
+    <option value="2023">2023</option>
   </select>
+
 
   <button class="filter-button" onclick="applyFilters()">Filter</button>
 </div>
@@ -164,6 +194,28 @@
 <div id="cardsContainer"></div>
 
 <script>
+
+  $("#technologyFilter").select2({
+          placeholder: "Select a Technology",
+          allowClear: true
+      });
+
+  $("#categoryFilter").select2({
+      placeholder: "Select a Category",
+      allowClear: true
+  });
+
+  $("#topicFilter").select2({
+          placeholder: "Select a Topic",
+          allowClear: true
+      });
+
+  $("#yearFilter").select2({
+          placeholder: "Select Year",
+          allowClear: true
+      });
+
+
   async function fetchData() {
     try {
       const response = await fetch('/organizations'); // Assuming you have a route for organizations
@@ -173,8 +225,40 @@
       console.error('Error fetching data:', error);
     }
   }
+  
+
+  async function addToDropdown(filterId, property) {
+    try {
+    const response = await fetch('/organizations'); // Assuming you have a route for organizations
+    organizationsData = await response.json();
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+
+  const filterSelect = document.getElementById(filterId);
+
+  // Extract unique values for the specified property from organizationsData
+  const uniqueValues = [...new Set(organizationsData.flatMap(org => org[property]))];
+
+  // Dynamically populate the select options
+  uniqueValues.forEach(value => {
+    const option = document.createElement('option');
+    option.value = value;
+    option.textContent = value;
+    filterSelect.appendChild(option);
+  });
+}
+
+
+addToDropdown('categoryFilter', 'category');
+addToDropdown('technologyFilter','technologies');
+addToDropdown('topicFilter','topics');
+
+
 
   async function applyFilters() {
+
+    
     var organizationsData;
     try {
       const response = await fetch('/organizations'); // Assuming you have a route for organizations
@@ -183,21 +267,22 @@
       console.error('Error fetching data:', error);
     }
     const category = document.getElementById("categoryFilter").value;
-    const year = document.getElementById("yearFilter").value;
+    const yearSelect = document.getElementById("yearFilter");
+    const selectedYears = Array.from(yearSelect.selectedOptions).map(option => option.value);
     const technology = document.getElementById("technologyFilter").value;
-    const other = document.getElementById("otherFilter").value;
-    const extra = document.getElementById("extraFilter").value;
+    const topic = document.getElementById("topicFilter").value;
 
 
     const filteredData = organizationsData.filter(org => {
       return (
         (!category || org.category === category) &&
-        (!year || org.years[year]) &&
-        (!technology || org.technologies.includes(technology))
+        (!selectedYears.length || selectedYears.some(selectedYear => org.years[selectedYear])) &&
+        (!technology || org.technologies.includes(technology)) &&
+        (!topic || org.topics.includes(topic))
+
       );
     });
-    console.log(category);
-    console.log(year);
+    
     generateCards(filteredData);
     console.log(organizationsData);
     console.log("sent data");
@@ -252,7 +337,7 @@
   let flag = false;
 
   async function startupFunction() {
-    applyFilters();
+    applyFilters(flag);
     flag = true;
   }
 
