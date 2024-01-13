@@ -122,8 +122,8 @@
   <label class="filter-label" for="categoryFilter">Category:</label>
   <select id="categoryFilter" class="filter-select">
     <option value="">All Categories</option>
-    <option value="Science and Medicine">Science and Medicine</option>
-    <option value="Technology">Technology</option>
+    <option value="Science and medicine">Science and Medicine</option>
+    <option value="technology">Technology</option>
   </select>
 
   <label class="filter-label" for="yearFilter">Year:</label>
@@ -137,9 +137,9 @@
   <label class="filter-label" for="technologyFilter">Technology:</label>
   <select id="technologyFilter" class="filter-select">
     <option value="">All Technologies</option>
-    <option value="C">C</option>
-    <option value="C++">C++</option>
-    <option value="Python">Python</option>
+    <option value="c">C</option>
+    <option value="c++">C++</option>
+    <option value="python">Python</option>
   </select>
 
   <label class="filter-label" for="otherFilter">Other:</label>
@@ -191,7 +191,9 @@
 
     const filteredData = organizationsData.filter(org => {
       return (
-        (!category || org.category === category)
+        (!category || org.category === category) &&
+        (!year || org.years[year]) &&
+        (!technology || org.technologies.includes(technology))
       );
     });
     console.log(category);
