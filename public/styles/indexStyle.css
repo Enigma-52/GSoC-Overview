@@ -1,0 +1,176 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+      padding: 0;
+      display: flex;
+      text-decoration: none;
+      flex-direction: column;
+      align-items: center;
+    min-height: 100vh;
+  }
+  #topArea {
+      width: 100%;
+      background-color: #3956e7;
+      color: #fff;
+      text-align: center;
+      padding: 16px;
+    }
+
+  h4{
+    text-align: center;
+  }
+  #cardsContainer {
+    text-decoration: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+
+  .card {
+    cursor: pointer; /* Add this to show pointer cursor on hover */
+    text-decoration: none;
+    text-align: center;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 16px;
+    width: 250px; 
+  }
+
+  .card-link:hover { /* Add this to show pointer cursor on hover */
+    text-decoration: none;
+    transform: scale(1.05);
+  }
+
+  .image-container {
+    text-decoration: none;
+    text-align: center;
+    background-color: #eee;
+    padding: 0px;
+    height: 100px; 
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  #separatorLine {
+      width: 100%;
+      height: 1px;
+      background-color: #ddd;
+      margin: 16px 0;
+    }
+  
+  .image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 4px;
+    background-color: #fff; 
+  }
+  .card-content {
+    text-decoration: none;
+    padding: 8px;
+    cursor: pointer;
+  }
+
+  .card-content h4 {
+    text-decoration: none;
+    margin-bottom: 8px;
+    color: #333333;
+    text-align: center;
+    font-size: 1.2em; 
+  }
+
+  .view-details-container{
+    text-decoration: none;
+    margin-bottom: 8px;
+  }
+
+  .card-content p {
+    text-decoration: none;
+    color: #666666;
+    line-height: 1.4;
+    font-size: 0.9em; 
+  }
+
+  .topics-technologies {
+    text-decoration: none;
+    display: flex;
+  flex-direction: column; 
+  align-items: center;
+    margin-top: 8px;
+  }
+
+  .topics-technologies p {
+    text-decoration: none;
+    margin: 8px 0;
+    color: #444444;
+    font-size: 0.9em; 
+  }
+
+  #filterSection {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #f2f2f2;
+}
+
+.filter-label {
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.filter-select {
+  width: 170px;
+  padding: 5px 5px 5px 5px;
+  margin-bottom: 10px;
+  margin-top: 0; 
+}
+
+.filter-button {
+  padding: 8px 15px;
+  margin-left: 10px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.filter-button:hover {
+  background-color: #45a049;
+}
+
+.upload-btn-wrapper {
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.btn {
+  text-decoration: none;
+  border: 1px solid black;
+  color: black;
+  background-color: rgb(169, 255, 232);
+  padding: 7px 7px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+  .card-link
+  {
+    cursor: pointer; /* Add this to show pointer cursor on hover */
+    text-decoration: none;
+    text-align: center;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 16px;
+    width: 250px; 
+  }
