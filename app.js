@@ -13,7 +13,20 @@ app.get('/', (req, res) => {
 });
 
 app.get('/organizations', (req, res) => {
-  res.json(organizationsData);
+  const { name } = req.query;
+
+  if (name) {
+    // If the name parameter is provided, return details for the specific organization
+    const orgDetails = organizationsData.find(org => org.name === name);
+    if (orgDetails) {
+      res.json(orgDetails);
+    } else {
+      res.status(404).json({ error: 'Organization not found' });
+    }
+  } else {
+    // If no name parameter is provided, return the full list of organizations
+    res.json(organizationsData);
+  }
 });
 
 app.listen(port, () => {
