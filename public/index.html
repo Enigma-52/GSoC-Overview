@@ -38,6 +38,7 @@
   }
 
   .card {
+    text-align: center;
     background-color: #ffffff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
@@ -93,7 +94,10 @@
   }
 
   .topics-technologies {
-    margin-top: 16px;
+    display: flex;
+  flex-direction: column; /* Stack the child elements vertically */
+  align-items: center;
+    margin-top: 8px;
   }
 
   .topics-technologies p {
@@ -136,6 +140,23 @@
 .filter-button:hover {
   background-color: #45a049;
 }
+
+.upload-btn-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.btn {
+  border: 1px solid black;
+  color: black;
+  background-color: rgb(169, 255, 232);
+  padding: 7px 7px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
 
 </style>
 
@@ -278,49 +299,63 @@ addToDropdown('topicFilter','topics');
   }
 
   function generateCards(organizationsData) {
-    var cardsContainer = document.getElementById("cardsContainer");
-    cardsContainer.innerHTML = ""; // Clear previous content
+  var cardsContainer = document.getElementById("cardsContainer");
+  cardsContainer.innerHTML = ""; // Clear previous content
 
-    organizationsData.forEach(function(orgData) {
-      // Create card elements
-      var card = document.createElement("div");
-      card.className = "card";
+  organizationsData.forEach(function(orgData) {
+    // Create card elements
+    var card = document.createElement("div");
+    card.className = "card";
 
-      var imageContainer = document.createElement("div");
-      imageContainer.className = "image-container";
-      var image = document.createElement("img");
-      image.src = orgData.image_url;
-      image.style.backgroundColor = orgData.image_background_color;
-      imageContainer.appendChild(image);
-      card.appendChild(imageContainer);
+    var imageContainer = document.createElement("div");
+    imageContainer.className = "image-container";
+    var image = document.createElement("img");
+    image.src = orgData.image_url;
+    image.style.backgroundColor = orgData.image_background_color;
+    imageContainer.appendChild(image);
+    card.appendChild(imageContainer);
 
-      var cardContent = document.createElement("div");
-      cardContent.className = "card-content";
-      var heading = document.createElement("h4");
-      heading.textContent = orgData.name;
-      cardContent.appendChild(heading);
+    var cardContent = document.createElement("div");
+    cardContent.className = "card-content";
+    var heading = document.createElement("h4");
+    heading.textContent = orgData.name;
+    cardContent.appendChild(heading);
 
-      var description = document.createElement("p");
-      description.textContent = orgData.description;
-      cardContent.appendChild(description);
+    var topicsTech = document.createElement("div");
 
-      var topicsTech = document.createElement("div");
-      topicsTech.className = "topics-technologies";
-      var category = document.createElement("p");
-      category.innerHTML = "<strong>Category:</strong> " + orgData.category;
-      topicsTech.appendChild(category);
+    var categoryBox = document.createElement("div");
+    categoryBox.className = "btn-wrapper";
+    var category = document.createElement("button");
+    category.className = "btn";
+    category.textContent = orgData.category;
+    categoryBox.appendChild(category);
+    topicsTech.appendChild(categoryBox);
 
-      var technologies = document.createElement("p");
-      technologies.innerHTML = "<strong>Technologies:</strong> " + orgData.technologies.slice(0, 5).join(", ");
-      topicsTech.appendChild(technologies);
+    var description = document.createElement("p");
+    description.textContent = orgData.description;
+    cardContent.appendChild(topicsTech); // Move topicsTech here
+    cardContent.appendChild(description); // Move description here
 
-      cardContent.appendChild(topicsTech);
-      card.appendChild(cardContent);
+    var technologies = document.createElement("p");
+    technologies.innerHTML = "<strong>Technologies:</strong> " + orgData.technologies.slice(0, 5).join(", ");
+    cardContent.appendChild(technologies);
 
-      // Append the card to the container
-      cardsContainer.appendChild(card);
-    });
-  }
+    var yearsContent = document.createElement("div");
+    yearsContent.className = "years-content";
+
+    var yearsList = document.createElement("p");
+    yearsList.innerHTML = "<strong>Years:</strong> " + Object.keys(orgData.years).join(", ");
+    yearsContent.appendChild(yearsList);
+
+    cardContent.appendChild(yearsContent);
+
+    card.appendChild(cardContent);
+
+    // Append the card to the container
+    cardsContainer.appendChild(card);
+  });
+}
+
 
   let flag = false;
 
