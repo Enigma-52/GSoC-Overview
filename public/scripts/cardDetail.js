@@ -8,7 +8,6 @@ async function fetchOrganizationDetails(orgName) {
     console.error('Error fetching organization details:', error);
     throw error; 
   }
-  console.log(orgDetails);
 }
 
 document.addEventListener("DOMContentLoaded", function() {
