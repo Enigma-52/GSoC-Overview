@@ -248,7 +248,10 @@
 
   // Extract unique values for the specified property from organizationsData
   const uniqueValues = [...new Set(organizationsData.flatMap(org => org[property]))];
-
+  if (property=="category")
+  {
+    console.log(uniqueValues);
+  }
   // Dynamically populate the select options
   uniqueValues.forEach(value => {
     const option = document.createElement('option');
@@ -321,13 +324,31 @@ addToDropdown('topicFilter','topics');
     heading.textContent = orgData.name;
     cardContent.appendChild(heading);
 
-    var topicsTech = document.createElement("div");
+    var categoryColorsMap = new Map([
+    ["Science and medicine", "#ff9999"],
+    ["Security", "#ccffcc"],
+    ["End user applications", "#ffcc99"],
+    ["Programming languages", "#ffccff"],
+    ["Media", "#99ccff"],
+    ["Operating systems", "#ffcc00"],
+    ["Other", "#d9d9d9"],
+    ["Infrastructure and cloud", "#99ff99"],
+    ["Data", "#ffb366"],
+    ["Web", "#66b3ff"],
+    ["Social and communication", "#ff6666"],
+    ["Development tools", "#c2f0c2"]
+  ]);
 
+    
+    var topicsTech = document.createElement("div");
     var categoryBox = document.createElement("div");
     categoryBox.className = "btn-wrapper";
     var category = document.createElement("button");
     category.className = "btn";
     category.textContent = orgData.category;
+    var categoryColor = categoryColorsMap.get(orgData.category) || "cyan";
+    category.style.border = "1px solid " + categoryColor;
+    category.style.backgroundColor = categoryColor;
     categoryBox.appendChild(category);
     topicsTech.appendChild(categoryBox);
 
