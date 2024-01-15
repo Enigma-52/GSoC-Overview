@@ -6,33 +6,40 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./styles/cardDetailstyle.css">
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <title>Organization Details</title>
 </head>
 <body class="bg-gray-100">
   <div class="max-w-6xl mx-auto p-5">
-      <div class="bg-white shadow-md rounded p-6">
-          <div class="flex flex-col md:flex-row">
-              <div class="md:w-1/4 mb-4 md:mb-0">
-                  <img id="org_image" src="{orgData.image_url}" alt="{orgData.name} logo" class="" style="height: auto; width: 100%;">
-              </div>
-              <div class="md:w-3/4 md:pl-6">
-                  <h1 class="text-2xl font-bold text-gray-800" id="orgName"></h1>
-                  <a href="{orgData.url}" class="text-blue-500 hover:text-blue-700" id="orgUrl">Website Link</a>
-                  <p class="mt-2 text-gray-600" id="orgDescription"></p>
-                  <div class="mt-4" id="orgCategories"></div>
-                  <div class="mt-4" id="orgTechnologies"></div>
-              </div>
-          </div>
-          <div class="mt-8">
-              <h2 class="text-xl font-semibold text-gray-800">Projects</h2>
-              <div class="mt-4" id="yearButtons"></div>
-              <div class="mt-4" id="projectContainer"></div>
-          </div>
-      </div>
-  </div>
-
+    <div class="bg-white shadow-md rounded p-6">
+        <div class="flex flex-wrap">
+            <div class="md:w-1/4">
+                <img id="org_image" src="{orgData.image_url}" alt="{orgData.name} logo" class="mb-4 md:mb-0">
+            </div>
+            <div class="md:w-3/4 md:pl-6 flex flex-col">
+                <h1 class="text-2xl font-bold text-gray-800" id="orgName"></h1>
+                <a href="{orgData.url}" class="text-blue-500 hover:text-blue-700" id="orgUrl">Website Link</a>
+                <p class="mt-2 text-gray-600" id="orgDescription"></p>
+                <div class="mt-4 flex" id="orgCategories"></div>
+                <div class="mt-4 flex" id="orgTechnologies"></div>
+            </div>
+        </div>
+        <div class="mt-8">
+            <h2 class="text-xl font-semibold text-gray-800">Projects</h2>
+            <div class="flex mt-4" id="yearAndChartContainer">
+              <div class="overflow-y-auto" style="max-height: 200px;">
+                <div class="flex flex-wrap" id="yearButtons"></div>
+            </div>
+                <div class="ml-4 flex items-center justify-center" id="projectsChartContainer" style="width: 50%; height: 200px; margin-top: -50px;">
+                    <canvas id="projectsChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+            <div class="mt-4" id="projectContainer"></div>
+        </div>
+    </div>
+</div>
 
   <script src="./scripts/cardDetail.js"></script>
 </body>

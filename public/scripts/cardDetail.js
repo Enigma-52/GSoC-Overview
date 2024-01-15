@@ -17,6 +17,9 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function makeItHappen(orgData){
+
+          //Generate Chart
+          chartGeneration(orgData);
           // Update organization information
           document.getElementById("orgName").innerText = orgData.name;
           document.getElementById("orgUrl").setAttribute("href", orgData.url);
@@ -114,4 +117,49 @@ function makeItHappen(orgData){
                   projectsContainer.appendChild(projectDiv);
           });
       }
+}
+
+function chartGeneration(orgData){
+  const startYear = 2016;
+        const endYear = 2023;
+
+        const years = Array.from({ length: endYear - startYear + 1 }, (_, index) => (startYear + index).toString());
+        const projectsData = years.map(year => orgData.years[year]?.num_projects || 0);
+
+        const maxDataValue = Math.max(...projectsData);
+        const maxYAxisValue = maxDataValue + 1;
+
+        const ctx = document.getElementById('projectsChart').getContext('2d');
+        const projectsChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: years,
+                datasets: [{
+                    label: 'Number of Projects',
+                    data: projectsData,
+                    fill: false,
+                    borderColor: 'rgb(75, 192, 192)',
+                    lineTension: 0.1
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        type: 'category',
+                        title: {
+                            display: true,
+                            text: 'Year'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Number of Projects'
+                        },
+                        max: maxYAxisValue,
+                        min: 0
+                    }
+                }
+            }
+        });
 }
