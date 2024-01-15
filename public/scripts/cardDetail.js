@@ -22,6 +22,8 @@ function makeItHappen(orgData){
           document.getElementById("orgUrl").setAttribute("href", orgData.url);
           document.getElementById("org_image").setAttribute("src", orgData.image_url);
           document.getElementById("orgDescription").innerText = orgData.description;
+          document.getElementById("orgName").innerText = orgData.name;
+          document.title = `${orgData.name} Details`;
   
           // Display organization categories
           const orgCategoriesContainer = document.getElementById("orgCategories");
