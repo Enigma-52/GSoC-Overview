@@ -5,7 +5,7 @@ GSoC Overview is a web application that provides users with a convenient interfa
 
 ## Video Demo
 
-https://github.com/Enigma-52/gsoc-query/assets/95529619/03091727-e258-45f2-b9f8-8f8e09080cd3
+https://github.com/Enigma-52/GSoC-Overview/assets/95529619/420b8bc3-2f9d-4101-8dc1-08afdef74998
 
 ## Features
 - **Dynamic Filtering:** Users can filter organizations based on categories, technologies, topics, and years.
