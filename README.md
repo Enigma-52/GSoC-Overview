@@ -16,7 +16,7 @@ The organization details page (`cardDetail.html`) provides in-depth information 
 
 ## Video Demo
 
-![AEDFC483-2664-4C18-B198-5F13768866C3_1_102_o](https://github.com/Enigma-52/gsoc-query/assets/95529619/22385877-a598-448e-83f0-9097ee5b0425)
+https://github.com/Enigma-52/gsoc-query/assets/95529619/03091727-e258-45f2-b9f8-8f8e09080cd3
 
 
 ## Visit the Website
