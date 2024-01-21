@@ -32,25 +32,6 @@ async function fetchAllData() {
     }
 }
 
-async function fetchByName(name) {
-      // converting the name and organizations response to lowercase server-side to make the search case-insensitive, 
-      // if not, search returns an error 👍 --- 
-      // also we should be fine with a partial match (.includes()) --- should be okay, yeah?!
-    try {
-       const lowercaseName = name.toLowerCase();
-       const matchingOrgs = organizationsData.filter(org => org.name.toLowerCase().includes(lowercaseName));
-       if (matchingOrgs.length > 0) {
-        // if there are matching organizations, generate cards:
-        generateCards(matchingOrgs);
-        clearErrorMessage(); // clear any existing error message, in case previously displayed
-        } else {
-            return displayErrorMessage(`Organization "${name}" not found.`);
-        }
-    } catch (error) {
-        console.error('Error fetching data:', error);
-    }
-}
-
 function displayErrorMessage(message) {
     const errorMessageContainer = document.getElementById("error-message");
     errorMessageContainer.textContent = message;
@@ -122,20 +103,18 @@ async function applyFilters() {
             (!category || org.category === category) &&
             (selectedYears.every(selectedYear => org.years[selectedYear])) &&
             (!technology || org.technologies.includes(technology)) &&
-            (!topic || org.topics.includes(topic))
+            (!topic || org.topics.includes(topic)) &&
+            (!nameSearch || org.name.toLowerCase().includes(nameSearch))
         );
     });
+
     generateCards(filteredData);
+
     if (filteredData.length > 0) {
         clearErrorMessage();
         } else {
             return displayErrorMessage('No Organization in this criteria');
         }
-    if (nameSearch) {
-        fetchByName(nameSearch);
-    } else {
-        console.log('Name is empty or undefined. Not calling fetchByName.');
-    }
 }
 
 function generateCards(organizationsData) {
