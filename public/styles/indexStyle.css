@@ -144,6 +144,12 @@ body {
   background-color: #45a049;
 }
 
+#nameSearch {
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #aaa;
+}
+
 .upload-btn-wrapper {
   text-decoration: none;
   position: relative;
@@ -174,3 +180,8 @@ body {
     margin: 16px;
     width: 250px; 
   }
+
+#error-message {
+  color: red;
+  font-weight: bold;
+}

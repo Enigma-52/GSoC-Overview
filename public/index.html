@@ -26,7 +26,11 @@
   <h1>GSoC Overview</h1>
 </div>
 
+
 <div id="filterSection">
+  <label class="filter-label" for="nameSearch">Search:</label>
+  <input type="text" id="nameSearch" placeholder="Search by Name">
+  
   <label class="filter-label" for="categoryFilter">Category:</label>
   <select id="categoryFilter" class="filter-select js-states form-control">
     <option value="">All Categories</option>
@@ -59,6 +63,10 @@
 </div>
 
 <div id="separatorLine"></div>
+
+<div id="error-container">
+  <p id="error-message"></p>
+</div>
 
 <div id="cardsContainer"></div>
 

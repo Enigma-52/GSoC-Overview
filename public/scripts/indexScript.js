@@ -18,16 +18,57 @@ $("#yearFilter").select2({
     allowClear: true
 });
 
+let organizationsData;
+// creating a global variable to store the data fetched from the server
+// this way we can avoid making multiple unbncessary requests to the server ... 
 
-async function fetchData() {
+async function fetchAllData() {
     try {
         const response = await fetch('/organizations');
-        const data = await response.json();
-        generateCards(data);
+        organizationsData = await response.json();
+        generateCards(organizationsData);
     } catch (error) {
         console.error('Error fetching data:', error);
     }
 }
+
+async function fetchByName(name) {
+      // converting the name and organizations response to lowercase server-side to make the search case-insensitive, 
+      // if not, search returns an error 👍 --- 
+      // also we should be fine with a partial match (.includes()) --- should be okay, yeah?!
+    try {
+       const lowercaseName = name.toLowerCase();
+       const matchingOrgs = organizationsData.filter(org => org.name.toLowerCase().includes(lowercaseName));
+       if (matchingOrgs.length > 0) {
+        // if there are matching organizations, generate cards:
+        generateCards(matchingOrgs);
+        clearErrorMessage(); // clear any existing error message, in case previously displayed
+        } else {
+            return displayErrorMessage(`Organization "${name}" not found.`);
+        }
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+}
+
+function displayErrorMessage(message) {
+    const errorMessageContainer = document.getElementById("error-message");
+    errorMessageContainer.textContent = message;
+}
+
+function clearErrorMessage() {
+    const errorMessageContainer = document.getElementById("error-message");
+    errorMessageContainer.textContent = '';
+}
+
+const nameSearchInput = document.getElementById("nameSearch");
+nameSearchInput.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+        // Call applyFilters when Enter is pressed -- to ease searching by name
+        applyFilters();
+    }
+});
+
 
 
 async function addToDropdown(filterId, property) {
@@ -62,8 +103,6 @@ addToDropdown('topicFilter', 'topics');
 
 async function applyFilters() {
 
-
-    var organizationsData;
     try {
         const response = await fetch('/organizations');
         organizationsData = await response.json();
@@ -75,6 +114,7 @@ async function applyFilters() {
     const selectedYears = Array.from(yearSelect.selectedOptions).map(option => option.value);
     const technology = document.getElementById("technologyFilter").value;
     const topic = document.getElementById("topicFilter").value;
+    const nameSearch = document.getElementById("nameSearch").value.toLowerCase();
 
 
     const filteredData = organizationsData.filter(org => {
@@ -85,8 +125,14 @@ async function applyFilters() {
             (!topic || org.topics.includes(topic))
         );
     });
+    organizationsData = filteredData;
     
     generateCards(filteredData);
+    if (nameSearch) {
+        fetchByName(nameSearch);
+    } else {
+        console.log('Name is empty or undefined. Not calling fetchByName.');
+    }    
     console.log(organizationsData);
     console.log("sent data");
     console.log(filteredData);
@@ -147,9 +193,11 @@ function generateCards(organizationsData) {
         cardContent.appendChild(topicsTech);
         cardContent.appendChild(description);
 
-        var technologies = document.createElement("p");
-        technologies.innerHTML = "<strong>Technologies:</strong> " + orgData.technologies.slice(0, 5).join(", ");
-        cardContent.appendChild(technologies);
+        if(orgData.technologies){
+            var technologies = document.createElement("p");
+            technologies.innerHTML = "<strong>Technologies:</strong> " + orgData.technologies.slice(0, 5).join(", ");
+            cardContent.appendChild(technologies);
+        }
 
         var yearsContent = document.createElement("div");
         yearsContent.className = "years-content";
@@ -174,6 +222,8 @@ function generateCards(organizationsData) {
 
     });
 }
+
+
 let flag = false;
 
 async function startupFunction() {
@@ -184,3 +234,7 @@ async function startupFunction() {
 if (!flag) {
     startupFunction();
 }
+
+document.addEventListener("DOMContentLoaded", function() {
+    nameSearchInput.value = ""
+  });
