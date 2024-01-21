@@ -125,17 +125,17 @@ async function applyFilters() {
             (!topic || org.topics.includes(topic))
         );
     });
-    organizationsData = filteredData;
-    
     generateCards(filteredData);
+    if (filteredData.length > 0) {
+        clearErrorMessage();
+        } else {
+            return displayErrorMessage('No Organization in this criteria');
+        }
     if (nameSearch) {
         fetchByName(nameSearch);
     } else {
         console.log('Name is empty or undefined. Not calling fetchByName.');
-    }    
-    console.log(organizationsData);
-    console.log("sent data");
-    console.log(filteredData);
+    }
 }
 
 function generateCards(organizationsData) {
