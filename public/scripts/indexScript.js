@@ -112,9 +112,9 @@ async function applyFilters() {
 
     if (filteredData.length > 0) {
         clearErrorMessage();
-        } else {
-            return displayErrorMessage('No Organization in this criteria');
-        }
+    } else {
+        return displayErrorMessage('No Organization in this criteria');
+    }
 }
 
 function generateCards(organizationsData) {
@@ -172,7 +172,7 @@ function generateCards(organizationsData) {
         cardContent.appendChild(topicsTech);
         cardContent.appendChild(description);
 
-        if(orgData.technologies){
+        if (orgData.technologies) {
             var technologies = document.createElement("p");
             technologies.innerHTML = "<strong>Technologies:</strong> " + orgData.technologies.slice(0, 5).join(", ");
             cardContent.appendChild(technologies);
@@ -216,4 +216,4 @@ if (!flag) {
 
 document.addEventListener("DOMContentLoaded", function() {
     nameSearchInput.value = ""
-  });
+});
